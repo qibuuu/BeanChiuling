@@ -1,0 +1,101 @@
+server:
+  port: 8080
+
+# ──────────────────────────────────────────
+# ⚠️  FILE NÀY LÀ TEMPLATE — KHÔNG CHỨA SECRETS THẬT
+# Tạo file application-local.yml để override các giá trị nhạy cảm
+# File đó đã được .gitignore bỏ qua, sẽ KHÔNG bị commit lên GitHub
+# ──────────────────────────────────────────
+spring:
+  application:
+    name: beanchiuling-server
+
+  # ── MySQL (Relational DB) ──
+  datasource:
+    url: jdbc:mysql://localhost:3306/beanchiuling?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: ${DB_PASSWORD:your_mysql_password}   # Override bằng env var hoặc application-local.yml
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update    # "update" để Hibernate tự tạo/update table | Sau này đổi thành "validate" khi dùng Flyway
+    show-sql: true        # In SQL ra console khi dev (tắt ở production)
+    properties:
+      hibernate:
+        format_sql: true  # Format SQL cho dễ đọc
+
+  # ── MongoDB (Message Storage) ──
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/beanchiuling_messages
+      auto-index-creation: true   # Tự tạo index từ @Indexed annotations
+
+    # ── Redis (Cache & Presence) ──
+    redis:
+      host: localhost
+      port: 6379
+      # password:           # Uncomment nếu Redis của bạn có password
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 5
+          min-idle: 1
+
+  # ── RabbitMQ (Message Broker) ──
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+  # ── File Upload ──
+  servlet:
+    multipart:
+      max-file-size: 8MB
+      max-request-size: 10MB
+
+# ──────────────────────────────────────────
+# JWT CONFIGURATION
+# ──────────────────────────────────────────
+jwt:
+  secret: ${JWT_SECRET:beanchiuling-super-secret-key-that-is-at-least-256-bits-long-for-hs256}
+  expiration: 86400000       # Access Token: 24 giờ (milliseconds)
+  refresh-expiration: 604800000  # Refresh Token: 7 ngày
+
+# ──────────────────────────────────────────
+# CLOUDINARY (File CDN)
+# ──────────────────────────────────────────
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:your_cloud_name}
+  api-key: ${CLOUDINARY_API_KEY:your_api_key}
+  api-secret: ${CLOUDINARY_API_SECRET:your_api_secret}
+
+# ──────────────────────────────────────────
+# CORS (Cross-Origin Resource Sharing)
+# ──────────────────────────────────────────
+cors:
+  allowed-origins: "http://localhost:3000"  # URL của Frontend Next.js
+
+# ──────────────────────────────────────────
+# ACTUATOR (Health Check Endpoints)
+# ──────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# ──────────────────────────────────────────
+# LOGGING
+# ──────────────────────────────────────────
+logging:
+  level:
+    com.beanchiuling: DEBUG
+    org.springframework.security: DEBUG  # Tắt ở production
+    org.springframework.web.socket: DEBUG

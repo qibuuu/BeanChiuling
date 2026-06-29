@@ -1,0 +1,39 @@
+# ──────────────────────────────────────────
+# BeanChiuling - Root .gitignore
+# ──────────────────────────────────────────
+
+# Maven build output
+beanchiuling-server/target/
+beanchiuling-server/.mvn/wrapper/maven-wrapper.jar
+
+# ⚠️  QUAN TRỌNG: Không commit file chứa secrets lên GitHub!
+# Dùng application.yml làm template, tạo application-local.yml riêng
+beanchiuling-server/src/main/resources/application-local.yml
+beanchiuling-server/src/main/resources/application-prod.yml
+
+# IDE files
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Node.js (Frontend sẽ thêm sau)
+node_modules/
+.next/
+.env.local
+.env.production
