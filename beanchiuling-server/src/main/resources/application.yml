@@ -18,21 +18,21 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: update    # "update" để Hibernate tự tạo/update table | Sau này đổi thành "validate" khi dùng Flyway
-    show-sql: true        # In SQL ra console khi dev (tắt ở production)
+      ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
-        format_sql: true  # Format SQL cho dễ đọc
+        format_sql: true
+    open-in-view: false
 
   # ── MongoDB (Message Storage) ──
   data:
     mongodb:
       uri: mongodb://localhost:27017/beanchiuling_messages
-      auto-index-creation: true   # Tự tạo index từ @Indexed annotations
+      # auto-index-creation: true  # Bật sau khi cài MongoDB
 
-    # ── Redis (Cache & Presence) ──
     redis:
       host: localhost
       port: 6379
