@@ -62,7 +62,12 @@ public enum ErrorCode {
     // ── FILE ──────────────────────────────────────────
     FILE_TOO_LARGE(400, "FILE_001", "File size exceeds the 8MB limit", HttpStatus.BAD_REQUEST),
     FILE_TYPE_NOT_SUPPORTED(400, "FILE_002", "File type is not supported", HttpStatus.BAD_REQUEST),
-    FILE_UPLOAD_FAILED(500, "FILE_003", "Failed to upload file to storage", HttpStatus.INTERNAL_SERVER_ERROR);
+    FILE_UPLOAD_FAILED(500, "FILE_003", "Failed to upload file to storage", HttpStatus.INTERNAL_SERVER_ERROR),
+
+    // -- FRIEND
+    FRIEND_NOT_FOUND(404, "FR_001", "Friend request not found", HttpStatus.NOT_FOUND),
+    FRIEND_ALREADY_EXISTS(409, "FR_002", "Already friends or request already sent", HttpStatus.CONFLICT),
+    FRIEND_REQUEST_SELF(400, "FR_003", "Cannot send a friend request to yourself", HttpStatus.BAD_REQUEST);
 
     // ──────────────────────────────────────────────────
     private final int statusCode;      // HTTP status code số
